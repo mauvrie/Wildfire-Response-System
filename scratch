@@ -1,0 +1,65 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
+import time
+
+import board
+
+from adafruit_seesaw.seesaw import Seesaw
+
+i2c_bus = board.I2C()  # uses board.SCL and board.SDA
+# i2c_bus = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
+
+ss = Seesaw(i2c_bus, addr=0x36)
+
+
+
+
+MOISTURE_THRESHOLD = 740 
+'''
+200(very dry)-2000(very) = 1800
+1800 * 0.3 = 540
+540 + 200 = 740 (threshold for the "30% or less" humidity)
+'''
+TEMP_THRESHOLD = 30
+WIND_THRESHOLD = 
+single_trial = True
+
+while single_trial:
+    #counts how many conditions are met
+    condition_count = 0
+
+    # read moisture level through capacitive touch pad
+    touch = ss.moisture_read()
+
+    # read temperature from the temperature sensor
+    temp = ss.get_temp()
+
+    #Moisture condition
+    if touch <= MOISTURE_THRESHOLD:
+        condition_count += 1
+    #Temperature condition
+    if temp >= TEMP_THRESHOLD:
+        condition_count += 1
+    #Wind/Time of flight condition
+
+
+    #to stop loop and give the values for 1 trial
+    single_trial = False
+
+
+
+    print("temp: " + str(temp) + "  moisture: " + str(touch))
+    time.sleep(1)
+
+
+#count how many conditions are met to adjust the angle in the gauge
+
+if condition_count == 3:
+    #code here for the gauge
+elif condition_count == 2:
+    #code here for the gauge
+elif condition_count == 1:
+    #code here 
+else: #if 0 conditions are met
+    #code here
